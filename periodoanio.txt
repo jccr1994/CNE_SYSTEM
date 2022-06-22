@@ -1,0 +1,23 @@
+
+SET GLOBAL event_scheduler = 1;
+
+CREATE EVENT actanio
+    ON SCHEDULE
+      EVERY 1 YEAR
+DO
+INSERT INTO t1 (anio_t1)
+VALUES (YEAR(NOW()));
+
+delimiter |
+
+CREATE TRIGGER testref BEFORE INSERT ON t1
+  FOR EACH ROW
+  BEGIN
+    INSERT INTO t2 SET anio_t2 = NEW.anio_t1;
+  END;
+|
+
+delimiter ;
+
+
+update para desabilitar el boton de eliminar
